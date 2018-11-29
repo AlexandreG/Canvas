@@ -22,13 +22,8 @@ class MyCanvas @JvmOverloads constructor(
         const val PIXEL_NUMBER = 100
     }
 
-    private var data: MutableList<MutableList<Int>> =
-        mutableListOf(
-            mutableListOf(1, 1, 1, 0),
-            mutableListOf(0, 0, 0, 1),
-            mutableListOf(0, 1, 0, 1),
-            mutableListOf(1, 0, 0, 1)
-        )
+    private var data: MutableList<MutableList<Int>> = mutableListOf()
+
 
     lateinit var callback: Callback
     private val paint = Paint()

@@ -36,4 +36,17 @@ class MainActivity : AppCompatActivity(), MyCanvas.Callback {
     override fun onUpdate(data: MutableList<MutableList<Int>>) {
         database.setValue(data)
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        var data: MutableList<MutableList<Int>> = mutableListOf()
+        for (i in 0..99) {
+            data.add(mutableListOf())
+            for (j in 0..99) {
+                data[i].add(j, 0)
+            }
+        }
+
+        database.setValue(data)
+    }
 }
