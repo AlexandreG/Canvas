@@ -1,4 +1,4 @@
-package fr.zzi.canvas.canvas
+package fr.zzi.canvas
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
