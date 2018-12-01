@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity(), MyCanvas.Callback {
         })
     }
 
-    override fun onUpdate(data: Pixel) {
-        pixelLiveData.updateData(data)
+    override fun onUpdate(data: Pixel, previousPixelId: String?) {
+        pixelLiveData.addPixel(data, previousPixelId)
     }
 }

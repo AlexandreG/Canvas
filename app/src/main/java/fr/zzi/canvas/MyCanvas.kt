@@ -17,10 +17,10 @@ class MyCanvas @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr), View.OnTouchListener {
 
     interface Callback {
-        fun onUpdate(data: Pixel)
+        fun onUpdate(data: Pixel, id: String?)
     }
 
-    val NB_PIXEL_WIDTH = 100
+    val NB_PIXEL_WIDTH = 20
 
 
     lateinit var callback: Callback
@@ -92,7 +92,7 @@ class MyCanvas @JvmOverloads constructor(
             }
         val newPixel = Pixel(xIndex, yIndex, pixelColor)
 
-        callback.onUpdate(newPixel)
+        callback.onUpdate(newPixel, touchedPixel?.id)
     }
 
     private fun findIndex(x: Float): Int {
