@@ -7,7 +7,6 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
-import fr.zzi.canvas.model.Board
 import fr.zzi.canvas.model.Pixel
 import fr.zzi.canvas.model.PixelColor
 
@@ -18,47 +17,58 @@ class MyCanvas @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr), View.OnTouchListener {
 
     interface Callback {
-        fun onUpdate(data: List<Pixel>)
+        fun onUpdate(data: Pixel)
     }
 
-    private var pixelList: List<Pixel> = listOf()
-    private lateinit var board: Board
+    val NB_PIXEL_WIDTH = 100
+
+
     lateinit var callback: Callback
-    private val paint = Paint()
+
+    private var pixelList: MutableList<Pixel> = mutableListOf()
+    private val paint: Paint = Paint().apply { color = Color.BLACK }
     private var pixelSize: Int = -1
 
     init {
-        paint.color = Color.BLACK
         setOnTouchListener(this)
     }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        drawData(canvas)
+
+        canvas?.let {
+            drawBackground(canvas)
+            drawData(canvas)
+        }
     }
 
-    private fun drawData(canvas: Canvas?) {
+    private fun drawBackground(canvas: Canvas) {
+        canvas.drawColor(Color.WHITE)
+    }
+
+    private fun drawData(canvas: Canvas) {
         pixelList
             .filter { it.color == PixelColor.BLACK }
-            .apply { drawPixel(canvas, x, y) }
+            .forEach { drawPixel(canvas, it.x.toFloat(), it.y.toFloat()) }
     }
 
     private fun drawPixel(canvas: Canvas?, i: Float, j: Float) {
         canvas?.drawRect(i * pixelSize, j * pixelSize, (i + 1) * pixelSize, (j + 1) * pixelSize, paint)
     }
 
-    fun refresh(newData: List<Pixel>) {
+    fun refresh(newData: MutableList<Pixel>) {
         pixelList = newData
         invalidate()
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, widthMeasureSpec)
-        pixelSize = MeasureSpec.getSize(widthMeasureSpec) / board.pixelWidthNb
+        pixelSize = MeasureSpec.getSize(widthMeasureSpec) / NB_PIXEL_WIDTH
     }
 
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
         if (event?.action == MotionEvent.ACTION_DOWN
+            || event?.action == MotionEvent.ACTION_MOVE
         ) {
             handleTouchEvent(event.x, event.y)
 
@@ -71,15 +81,18 @@ class MyCanvas @JvmOverloads constructor(
         val xIndex = findIndex(x)
         val yIndex = findIndex(y)
 
-        pixelList.find { it.x == xIndex && it.y == yIndex }.apply {
-            this?.color = if (this?.color == PixelColor.BLACK) {
+        val touchedPixel = pixelList.findLast { it.x == xIndex && it.y == yIndex }
+
+
+        val pixelColor =
+            if (touchedPixel?.color == PixelColor.BLACK) {
                 PixelColor.WHITE
             } else {
                 PixelColor.BLACK
             }
-        }
+        val newPixel = Pixel(xIndex, yIndex, pixelColor)
 
-        callback.onUpdate(pixelList)
+        callback.onUpdate(newPixel)
     }
 
     private fun findIndex(x: Float): Int {
