@@ -71,10 +71,8 @@ class MyCanvas @JvmOverloads constructor(
             || event?.action == MotionEvent.ACTION_MOVE
         ) {
             handleTouchEvent(event.x, event.y)
-
-            return true
         }
-        return false
+        return true
     }
 
     private fun handleTouchEvent(x: Float, y: Float) {
@@ -83,6 +81,9 @@ class MyCanvas @JvmOverloads constructor(
 
         val touchedPixel = pixelList.findLast { it.x == xIndex && it.y == yIndex }
 
+        if (touchedPixel?.color == PixelColor.BLACK) {
+            return
+        }
 
         val pixelColor =
             if (touchedPixel?.color == PixelColor.BLACK) {
