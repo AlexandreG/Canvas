@@ -28,6 +28,7 @@ class MyCanvas @JvmOverloads constructor(
     private var pixelList: MutableList<Pixel> = mutableListOf()
     private val paint: Paint = Paint().apply { color = Color.BLACK }
     private var pixelSize: Int = -1
+    public var currentColor: PixelColor = PixelColor.BLACK
 
     init {
         setOnTouchListener(this)
