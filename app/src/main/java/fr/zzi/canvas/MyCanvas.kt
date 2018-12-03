@@ -21,7 +21,7 @@ class MyCanvas @JvmOverloads constructor(
         fun onUpdate(data: Pixel, id: String?)
     }
 
-    val NB_PIXEL_WIDTH = 40
+    val NB_PIXEL_WIDTH = 50
 
 
     lateinit var callback: Callback
