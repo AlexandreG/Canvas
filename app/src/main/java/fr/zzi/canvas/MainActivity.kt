@@ -9,9 +9,9 @@ import fr.zzi.canvas.model.PixelColor
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity(), MyCanvas.Callback {
+class MainActivity : AppCompatActivity(), CanvasView.Callback {
 
-    lateinit var canvas: MyCanvas
+    lateinit var canvasView: CanvasView
     lateinit var pixelLiveData: PixelLiveData
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,21 +23,21 @@ class MainActivity : AppCompatActivity(), MyCanvas.Callback {
     }
 
     private fun initCanvas() {
-        canvas = findViewById(R.id.my_canvas)
-        canvas.callback = this
+        canvasView = findViewById(R.id.canvas_view)
+        canvasView.callback = this
     }
 
     private fun initLiveData() {
         pixelLiveData = PixelLiveData()
         pixelLiveData.observe(this, Observer { it ->
             it?.let {
-                canvas.refresh(it)
+                canvasView.refresh(it)
             }
         })
     }
 
     public fun updateColor(view: View?) {
-        canvas.currentColor = when (view?.id) {
+        canvasView.currentColor = when (view?.id) {
             R.id.color_1 -> PixelColor.WHITE
             R.id.color_2 -> PixelColor.GREEN
             R.id.color_3 -> PixelColor.YELLOW

@@ -11,7 +11,7 @@ import android.view.View
 import fr.zzi.canvas.model.Pixel
 import fr.zzi.canvas.model.PixelColor
 
-class MyCanvas @JvmOverloads constructor(
+class CanvasView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
