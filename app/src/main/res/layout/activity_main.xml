@@ -10,6 +10,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+    <ProgressBar
+            android:id="@+id/progress_bar"
+            app:layout_constraintBottom_toBottomOf="@id/canvas_view"
+            app:layout_constraintTop_toTopOf="@id/canvas_view"
+            android:indeterminate="true"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
     <View
             android:id="@+id/color_separator"
             android:layout_width="match_parent"
