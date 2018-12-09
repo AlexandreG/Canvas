@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity(), CanvasView.Callback {
     private fun initOnlineUserLiveData() {
         onlineUserLiveData = OnlineUserLiveData()
 
-        onlineUserLiveData?.observe(this, Observer { it ->
+        onlineUserLiveData.observe(this, Observer { it ->
             it?.let {
                 supportActionBar?.title =
                         if (it <= 1) {
