@@ -1,7 +1,12 @@
-# Canvas
+# My Canvas
 
-Appli Android : 
-Une toile blanche partagée en temps reel
+This project is a little Android application that allows you to draw online with other people.
 
-##
-Licence : tous droits réservés
+### Technology used
+It is a little pet project to get (a little bit) better with :
+* Kotlin
+* LiveData
+* ConstraintLayout
+
+### Licence
+All rights reserved
