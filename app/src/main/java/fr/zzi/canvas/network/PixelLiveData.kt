@@ -1,4 +1,4 @@
-package fr.zzi.canvas
+package fr.zzi.canvas.network
 
 import android.arch.lifecycle.LiveData
 import android.util.Log

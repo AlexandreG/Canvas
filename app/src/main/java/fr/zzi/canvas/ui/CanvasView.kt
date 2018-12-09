@@ -1,9 +1,8 @@
-package fr.zzi.canvas
+package fr.zzi.canvas.ui
 
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet

@@ -6,6 +6,9 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import fr.zzi.canvas.model.Pixel
 import fr.zzi.canvas.model.PixelColor
+import fr.zzi.canvas.network.OnlineUserLiveData
+import fr.zzi.canvas.network.PixelLiveData
+import fr.zzi.canvas.ui.CanvasView
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
@@ -20,6 +23,7 @@ class MainActivity : AppCompatActivity(), CanvasView.Callback {
     private lateinit var timer: Timer
 
     private lateinit var pixelLiveData: PixelLiveData
+    private lateinit var onlineUserLiveData: OnlineUserLiveData
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +32,9 @@ class MainActivity : AppCompatActivity(), CanvasView.Callback {
         initCanvasView()
         displayLoader()
         startTimer()
-        initLiveData()
+
+        initPixelLiveData()
+        initOnlineUserLiveData()
     }
 
     private fun initCanvasView() {
@@ -58,7 +64,7 @@ class MainActivity : AppCompatActivity(), CanvasView.Callback {
         }, 0, (1000 / CanvasView.FPS).toLong())
     }
 
-    private fun initLiveData() {
+    private fun initPixelLiveData() {
         pixelLiveData = PixelLiveData()
         pixelLiveData.observe(this, Observer { it ->
             it?.let {
@@ -70,6 +76,31 @@ class MainActivity : AppCompatActivity(), CanvasView.Callback {
                 pixelList.add(it)
             }
         })
+    }
+
+    private fun initOnlineUserLiveData() {
+        onlineUserLiveData = OnlineUserLiveData()
+
+        onlineUserLiveData?.observe(this, Observer { it ->
+            it?.let {
+                supportActionBar?.title =
+                        if (it <= 1) {
+                            getString(R.string.app_name)
+                        } else {
+                            getString(R.string.online_user, it)
+                        }
+            }
+        })
+    }
+
+    override fun onPause() {
+        super.onPause()
+        onlineUserLiveData.onDisconnected()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        onlineUserLiveData.onConnected()
     }
 
     fun updateColor(view: View?) {

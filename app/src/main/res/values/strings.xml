@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">My Canvas</string>
+    <string name="online_user">Online : %1$d</string>
 </resources>
 
