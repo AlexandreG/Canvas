@@ -6,7 +6,7 @@ import com.google.firebase.database.*
 import fr.zzi.canvas.model.Pixel
 
 
-class PixelLiveData : LiveData<MutableList<Pixel>>() {
+class PixelLiveData : LiveData<Pixel>() {
 
     private val dbReference: DatabaseReference
     private val childListener: ChildEventListener
@@ -14,7 +14,6 @@ class PixelLiveData : LiveData<MutableList<Pixel>>() {
     init {
         dbReference = FirebaseDatabase.getInstance().getReference("pixelList")
         childListener = ListEventListener()
-        value = mutableListOf()
     }
 
     override fun onActive() {
@@ -46,20 +45,14 @@ class PixelLiveData : LiveData<MutableList<Pixel>>() {
         }
 
         override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-            //TODO dessiner nouveau
             val pixel = p0.getValue(Pixel::class.java)
             pixel?.id = p0.key
-
-            pixel?.let {
-                value?.add(it)
-            }
-
-            value = value
+            value = pixel
         }
 
         override fun onChildRemoved(p0: DataSnapshot) {
-            //TODO effacer ancien
-//            value = p0.value as MutableList<Pixel>?
+            //No need to erase an old pixel :
+            //we receive the new pixel to draw with onChildAdded()
         }
     }
 }
