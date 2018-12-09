@@ -14,7 +14,7 @@ class CanvasView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : View(context, attrs, defStyleAttr), View.OnTouchListener {
+) : CachedDrawingView(context, attrs, defStyleAttr), View.OnTouchListener {
 
     interface Callback {
         fun onTouch(xIndex: Int, yIndex: Int)
@@ -27,28 +27,16 @@ class CanvasView @JvmOverloads constructor(
 
     lateinit var callback: Callback
 
-    private var bitmapCache: Bitmap? = null
-    private var canvasCache: Canvas? = null
-
-    private val newPixels: MutableList<Pixel>
-    private val paint: Paint
-    private var pixelSize: Int
-    private var viewWidth: Int = -1
+    private val newPixels: MutableList<Pixel> = mutableListOf()
+    private var pixelSize: Int = -1
 
     init {
-        newPixels = mutableListOf()
-        paint = Paint()
-        pixelSize = -1
         setOnTouchListener(this)
     }
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         canvas?.let {
-            bitmapCache?.let {
-                canvas.drawBitmap(bitmapCache, 0F, 0F, paint)
-            }
-
             drawAddedPixels(canvas)
             newPixels.clear()
         }
@@ -76,17 +64,7 @@ class CanvasView @JvmOverloads constructor(
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, widthMeasureSpec)
-        viewWidth = MeasureSpec.getSize(widthMeasureSpec)
         pixelSize = viewWidth / NB_PIXEL_WIDTH
-
-        initBitmapCache()
-    }
-
-    private fun initBitmapCache() {
-        if (bitmapCache == null) {
-            bitmapCache = Bitmap.createBitmap(viewWidth, viewWidth, Bitmap.Config.ARGB_8888)
-            canvasCache = Canvas(bitmapCache)
-        }
     }
 
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {
@@ -107,6 +85,5 @@ class CanvasView @JvmOverloads constructor(
     private fun findIndex(x: Float): Int {
         return (x / pixelSize).toInt()
     }
-
 
 }
